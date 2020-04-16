@@ -14,20 +14,6 @@ pipeline {
                     url: jfrog,
                     credentialsId: jfrog
                 )
-
-                rtMavenDeployer (
-                    id: "maven_deployer",
-                    serverId: "jfrog",
-                    releaseRepo: "libs-release-local",
-                    snapshotRepo: "libs-snapshot-local"
-                )
-
-                rtMavenResolver (
-                    id: "maven_resolver",
-                    serverId: "jfrog",
-                    releaseRepo: "libs-release",
-                    snapshotRepo: "libs-snapshot"
-                )
             }
         }
 
