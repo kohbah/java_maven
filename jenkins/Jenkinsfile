@@ -6,8 +6,8 @@ pipeline {
             steps {
                 rtServer (
                     id: "jfrog",
-                    url: jfrog,
-                    credentialsId: jfrog
+                    url: "http://10.0.1.113:8081/artifactory",
+                    credentialsId: "jfrog"
                 )
 
                 rtMavenDeployer (
@@ -34,6 +34,8 @@ pipeline {
                     goals: 'clean install',
                     deployerId: "maven_deployer",
                     resolverId: "maven_resolve"
+                    buildName: 'sample-app'
+                    buildNumber: '1'
                 )
             }
         }
@@ -42,6 +44,8 @@ pipeline {
             steps {
                 rtPublishBuildInfo (
                     serverId: "jfrog"
+                    buildName: 'sample-app'
+                    buildNumber: '1'
                 )
             }
         }
