@@ -22,6 +22,12 @@ pipeline {
                     snapshotRepo: "libs-snapshot-local"
                 )
 
+                rtMavenResolver (
+                    id: "maven_resolver",
+                    serverId: "jfrog",
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "libs-snapshot"
+                )
             }
         }
 
