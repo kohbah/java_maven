@@ -37,6 +37,8 @@ pipeline {
                     goals: 'clean install',
                     deployerId: "maven_deployer",
                     resolverId: "maven_resolver"
+                    buildName: 'wyoming',
+                    buildNumber: '0.0.1'
 
                 )
             }
@@ -46,8 +48,7 @@ pipeline {
             steps {
                 rtPublishBuildInfo (
                     serverId: "jfrog"
-                    buildName: 'wyoming',
-                    buildNumber: '0.0.1'
+
                 )
             }
         }
