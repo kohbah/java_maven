@@ -1,29 +1,48 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
-        stage('Build') {
+
+        stage ('Artifactory configuration') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                rtServer (
+                    id: "jfrog",
+                    url: jfrog,
+                    credentialsId: jfrog
+                )
+
+                rtMavenDeployer (
+                    id: "maven",
+                    serverId: "jfrog",
+                    releaseRepo: "libs-release-local",
+                    snapshotRepo: "libs-snapshot-local"
+                )
+
+                rtMavenResolver (
+                    id: "maven",
+                    serverId: "jfrog",
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "libs-snapshot"
+                )
             }
         }
-        stage('Test') {
+        
+        stage ('Exec Maven') {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
+                rtMavenRun (
+                    tool: maven, // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
             }
         }
-        stage('Deliver') {
+        
+        stage ('Publish build info') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
             }
         }
     }
