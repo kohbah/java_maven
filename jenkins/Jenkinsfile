@@ -6,13 +6,18 @@ pipeline {
     }
 
     stages {
+        stage ('Clone') {
+            steps {
+                git branch: 'master', url: "https://github.com/kohbah/java_maven.git"
+                         }
+        }
 
         stage ('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "jfrog",
                     url: jfrog,
-                    credentialsId: "password"
+                    credentialsId: jfrog
                 )
 
                 rtMavenDeployer (
