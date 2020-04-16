@@ -34,8 +34,6 @@ pipeline {
                     goals: 'clean install',
                     deployerId: "maven_deployer",
                     resolverId: "maven_resolver"
-                    buildName: 'sample-app'
-                    buildNumber: '1'
                 )
             }
         }
@@ -44,8 +42,6 @@ pipeline {
             steps {
                 rtPublishBuildInfo (
                     serverId: "jfrog"
-                    buildName: 'sample-app'
-                    buildNumber: '1'
                 )
             }
         }
