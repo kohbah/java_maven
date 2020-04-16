@@ -11,37 +11,37 @@ pipeline {
                 )
 
                 rtMavenDeployer (
-                    id: "maven",
+                    id: "maven_deployer",
                     serverId: "jfrog",
                     releaseRepo: "libs-release-local",
                     snapshotRepo: "libs-snapshot-local"
                 )
 
                 rtMavenResolver (
-                    id: "maven",
+                    id: "maven_resolver",
                     serverId: "jfrog",
                     releaseRepo: "libs-release",
                     snapshotRepo: "libs-snapshot"
                 )
             }
         }
-        
+
         stage ('Exec Maven') {
             steps {
                 rtMavenRun (
                     tool: maven, // Tool name from Jenkins configuration
                     pom: 'pom.xml',
                     goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
+                    deployerId: "maven_deployer",
+                    resolverId: "maven_resolve"
                 )
             }
         }
-        
+
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
+                    serverId: "jfrog"
                 )
             }
         }
