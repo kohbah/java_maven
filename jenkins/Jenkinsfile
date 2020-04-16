@@ -10,9 +10,8 @@ pipeline {
             steps {
                 rtServer (
                     id: "jfrog",
-                    url: "http://10.0.1.113:8081/artifactory",
-                    username: 'admin',
-                    password: 'password'
+                    url: jfrog,
+                    credentialsId: jfrog
                 )
 
                 rtMavenDeployer (
@@ -38,6 +37,9 @@ pipeline {
                     goals: 'clean install',
                     deployerId: "maven_deployer",
                     resolverId: "maven_resolver"
+                    buildName: 'wyoming',
+                    buildNumber: '0.0.1'
+
                 )
             }
         }
@@ -46,6 +48,8 @@ pipeline {
             steps {
                 rtPublishBuildInfo (
                     serverId: "jfrog"
+                    buildName: 'wyoming',
+                    buildNumber: '0.0.1'
                 )
             }
         }
