@@ -33,7 +33,7 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "maven_deployer",
-                    resolverId: "maven_resolve"
+                    resolverId: "maven_resolver"
                     buildName: 'sample-app'
                     buildNumber: '1'
                 )
