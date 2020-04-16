@@ -35,11 +35,13 @@ pipeline {
             steps {
                 rtMavenRun (
                     pom: 'pom.xml',
-                    goals: 'clean install'
+                    goals: 'clean install',
+                    opts: '-Xms1024m -Xmx4096m',
+                    deployerId: "maven_deployer",
+                    resolverId: "maven_resolver"
                 )
             }
         }
-
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
