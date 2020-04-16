@@ -39,11 +39,7 @@ pipeline {
 
         stage ('Exec Maven') {
             steps {
-                rtMavenRun (
-                    goals: 'clean package',
-                    deployerId: "maven_deployer",
-                    resolverId: "maven_resolver"
-                )
+                    sh 'mvn -B -DskipTests clean package'
             }
         }
         stage ('Publish build info') {
