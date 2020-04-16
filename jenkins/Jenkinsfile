@@ -6,13 +6,6 @@ pipeline {
     }
 
     stages {
-
-        stage ('Clone') {
-            steps {
-                git branch: 'master', url: "https://github.com/kohbah/java_maven.git"
-            }
-        }
-
         stage ('Artifactory configuration') {
             steps {
                 rtServer (
@@ -42,7 +35,7 @@ pipeline {
             steps {
                 rtMavenRun (
                     pom: 'pom.xml',
-                    goals: 'clean install -X',
+                    goals: 'clean install',
                     deployerId: "maven_deployer",
                     resolverId: "maven_resolver"
                 )
