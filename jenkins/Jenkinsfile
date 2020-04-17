@@ -43,7 +43,11 @@ pipeline {
               )
             }
         }
-
+        stage ("publish to artifactory") {
+            timeout(time: 2, unit: "MINUTES") {
+              input message: 'do you want to publish this build to artifactory server?', ok: 'Yes'
+             }
+        }
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
