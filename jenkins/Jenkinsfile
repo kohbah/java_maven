@@ -15,6 +15,7 @@ pipeline {
 
         stage('build && SonarQube analysis') {
             steps {
+                def scannerHome = tool 'SonarQubeScanner';
                 withSonarQubeEnv('sonar') {
                     // Optionally use a Maven environment you've configured already
                     withMaven(maven:'maven') {
