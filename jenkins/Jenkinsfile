@@ -37,7 +37,9 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "maven_deployer",
-                    resolverId: "maven_resolver"
+                    resolverId: "maven_resolver",
+                    buildName: 'maven_app',
+                    buildNumber: '0.0.1'
               )
             }
         }
@@ -45,8 +47,9 @@ pipeline {
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: "jfrog"
-
+                    serverId: "jfrog",
+                    buildName: 'maven_app',
+                    buildNumber: '0.0.1'
                 )
             }
         }
