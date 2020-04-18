@@ -42,6 +42,14 @@ pipeline {
 
     stages {
 
+
+
+        stage('SCM') {
+            steps {
+                git url: 'https://github.com/kohbah/java_maven.git'
+            }
+        }
+
         stage ('Artifactory configuration') {
             steps {
                 rtServer (

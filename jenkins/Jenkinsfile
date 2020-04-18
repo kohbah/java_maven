@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('SCM') {
-            steps {
-                git url: 'https://github.com/kohbah/java_maven.git'
-            }
-        }
-
         stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
