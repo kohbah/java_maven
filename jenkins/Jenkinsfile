@@ -79,6 +79,9 @@ pipeline {
         always {
              echo 'deleting the current directory'
              deleteDir()
+             dir("${workspace}@tmp") {
+                 deleteDir()
+                 }
             }
     }
 }
