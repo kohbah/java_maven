@@ -73,10 +73,10 @@ pipeline {
                 sshagent (credentials : ['application']) {
                     sh 'ssh -o StrictHostKeyChecking=no jenkins@10.0.1.164 uptime'
                     sh 'ssh -v jenkins@10.0.1.164'
-                    sh 'ssh jenkins@10.0.1.164 mkdir -p /app01/hello'
+                    sh 'ssh jenkins@10.0.1.164  sudo mkdir -p /app01/hello'
                     sh 'scp -r target/${NAME}-${VERSION}.jar jenkins@10.0.1.164:/app01/hello'
                     sh 'scp -r jenkins/scripts/deliver.sh jenkins@10.0.1.164:/app01/hello'
-                    sh 'ssh -o StrictHostKeyChecking=no jenkins@10.0.1.164 "./app01/hello/deliver.sh"'
+                    sh 'ssh -o StrictHostKeyChecking=no jenkins@10.0.1.164 "sudo ./app01/hello/deliver.sh"'
                 }
             }
         }
