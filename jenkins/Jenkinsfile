@@ -73,7 +73,6 @@ pipeline {
                 sh './jenkins/scripts/deliver.sh'
             }
         }
-    }
         stage ('Deploy') {
             steps{
                 sshagent(credentials : ['application']) {
@@ -86,6 +85,7 @@ pipeline {
                 }
             }
         }
+    }
     post {
         always {
              echo 'deleting the current directory'
