@@ -70,7 +70,7 @@ pipeline {
         }
         stage ('Deploy') {
             steps{
-             sshPublisher(publishers: [sshPublisherDesc(configName: 'application', sshCredentials: [encryptedPassphrase: '{AQAAABAAAAAQqXeSLFWfHnejIt7MeCYrdj0OAkGOCthKW7Ac9UqCyXg=}', key: '', keyPath: '', username: 'jenkins'], transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app01/hello', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: '**/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+              sshPublisher(publishers: [sshPublisherDesc(configName: 'application', sshCredentials: [encryptedPassphrase: '{AQAAABAAAAAQpNSdO1PC02NNs+LpR1/0jrm4bih93iYu/4+i6FKJtrE=}', key: '', keyPath: '', username: 'jenkins'], transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app01/hello', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
             }
         }
     }
