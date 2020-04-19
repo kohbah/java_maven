@@ -29,10 +29,6 @@ pipeline {
     }
 }
 
-jenkins 11739dca187739f25fecc5c3531fa71079
-
-414ca7fa77b556b89c7455110549514e5752222d
-
 pipeline {
     agent any
     tools {
@@ -42,11 +38,11 @@ pipeline {
 
     stages {
 
-
-
-        stage('SCM') {
+        stage('build && SonarQube analysis') {
             steps {
-                git url: 'https://github.com/kohbah/java_maven.git'
+                withSonarQubeEnv('sonar') {
+                        sh 'mvn clean package sonar:sonar'
+                }
             }
         }
 
@@ -54,8 +50,9 @@ pipeline {
             steps {
                 rtServer (
                     id: "jfrog",
-                    url: jfrog,
-                    credentialsId: jfrog
+                    url: 'http://10.0.1.113:8081/artifactory',
+                    username: 'admin',
+                    password: 'password'
                 )
 
                 rtMavenDeployer (
@@ -80,17 +77,42 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "maven_deployer",
-                    resolverId: "maven_resolver"
-                )
+                    resolverId: "maven_resolver",
+                    buildName: 'maven_app',
+                    buildNumber: '0.0.1'
+              )
             }
         }
-
+        stage ("publish to artifactory") {
+            steps {
+                timeout(time: 2, unit: "MINUTES") {
+                    input message: 'do you want to publish this build to artifactory server?', ok: 'Yes'
+             }
+            }
+        }
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: "jfrog"
+                    serverId: "jfrog",
+                    buildName: 'maven_app',
+                    buildNumber: '0.0.1'
                 )
             }
         }
+        stage ('Deploy') {
+            steps{
+             sshPublisher(publishers: [sshPublisherDesc(configName: 'application', sshCredentials: [encryptedPassphrase: '{AQAAABAAAAAQqXeSLFWfHnejIt7MeCYrdj0OAkGOCthKW7Ac9UqCyXg=}', key: '', keyPath: '', username: 'jenkins'], transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app01/hello', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: '**/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+    }
+    post {
+        always {
+             echo 'deleting the current directory'
+             deleteDir()
+             echo 'deleting @tmp directory'
+             dir("${workspace}@tmp") {
+                 deleteDir()
+                 }
+            }
     }
 }
