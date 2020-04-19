@@ -75,7 +75,7 @@ pipeline {
         }
         stage ('Deploy') {
             steps{
-                sshagent(credentials : ['application']) {
+                sshagent (credentials : ['application']) {
                     sh 'ssh -o StrictHostKeyChecking=no jenkins@10.0.1.164 uptime'
                     sh 'ssh -v jenkins@10.0.1.164'
                     sh 'ssh jenkins@10.0.1.164 mkdir -p /app01/hello'
